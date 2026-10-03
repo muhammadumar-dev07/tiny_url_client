@@ -1,1 +1,50 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@theme {
+  --color-brand: #0980a1;
+  --color-brand-dark: #002342;
+  --color-brand-light: #10bde5;
+  --color-brand-tint: #e6f2f6;
+  --color-success: #1f8244;
+  --color-danger: #9b1c1c;
+  --font-sans: 'Montserrat', sans-serif;
+  --font-display: 'Bungee', sans-serif;
+}
+
+:root {
+  color: #0f172a;
+  background-color: #f8f9fa;
+  font-family: 'Montserrat', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 0;
+  min-height: 100vh;
+  background: #f8f9fa;
+  color: #0f172a;
+  font-family: 'Montserrat', sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.font-display {
+  font-family: 'Bungee', sans-serif;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
