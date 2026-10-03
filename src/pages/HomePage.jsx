@@ -83,17 +83,17 @@ function ShortenerHero() {
         className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,35,66,0.96)_0%,rgba(0,35,66,0.88)_48%,rgba(13,118,147,0.66)_100%)] max-[767px]:bg-[linear-gradient(180deg,rgba(0,35,66,0.84)_0%,rgba(0,35,66,0.96)_100%)]"
       />
       <div className="mx-auto max-w-7xl">
-        <div className="max-w-[760px] space-y-8">
-          <div className="space-y-5">
+        <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12 xl:gap-16">
+          <div className="space-y-5 lg:min-w-0">
             <h1 className="max-w-xl font-display text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
               Make every link easier to trust.
             </h1>
-            <p className="max-w-xl text-lg leading-8 text-white/90">
+            <p className="max-w-xl text-[26px] leading-[45px] text-white/90">
               Create short, branded URLs in seconds and share content with more clarity across your campaigns.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="rounded-[28px] border border-white/70 bg-white p-4 shadow-[0_30px_70px_-30px_rgba(0,20,40,0.8)] sm:p-5">
+          <form onSubmit={handleSubmit} className="min-w-0 rounded-[28px] border border-white/70 bg-white p-4 shadow-[0_30px_70px_-30px_rgba(0,20,40,0.8)] sm:p-5">
             <div role="tablist" aria-label="Link tools" className="mb-5 flex border-b border-slate-200">
               {tabs.map((tab) => (
                 <button
