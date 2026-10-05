@@ -4,8 +4,10 @@ import * as mockApi from './mock/index.js';
 import * as linkApi from './links.js';
 import * as authApi from './auth.js';
 import * as domainApi from './domains.js';
+import { FEATURES } from '../config/features.js';
 
 const isMock = import.meta.env.VITE_USE_MOCK === 'true';
+const MAX_RECENT_LINKS = 10;
 const api = {
   createLink: isMock ? mockApi.createLink : linkApi.createLink,
   deleteLink: isMock ? mockApi.deleteLink : linkApi.deleteLink,
@@ -21,9 +23,15 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(FEATURES.auth);
 
   const refreshUser = useCallback(async () => {
+    if (!FEATURES.auth) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
     try {
       const result = await api.getMe();
       setUser(result?.user || result || null);
@@ -35,10 +43,13 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    refreshUser();
+    if (FEATURES.auth) {
+      refreshUser();
+    }
   }, [refreshUser]);
 
   const login = useCallback(async (payload) => {
+    if (!FEATURES.auth) return null;
     const result = await api.login(payload);
     const nextUser = result?.user || result || null;
     setUser(nextUser);
@@ -46,6 +57,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const register = useCallback(async (payload) => {
+    if (!FEATURES.auth) return null;
     const result = await api.register(payload);
     const nextUser = result?.user || result || null;
     setUser(nextUser);
@@ -53,6 +65,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(async () => {
+    if (!FEATURES.auth) return;
     await api.logout();
     setUser(null);
   }, []);
@@ -97,7 +110,7 @@ export function useShortenLink() {
   return { data, loading, error, submit };
 }
 
-export function useRecentLinks(limit = 5) {
+export function useRecentLinks(limit = MAX_RECENT_LINKS) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -107,7 +120,7 @@ export function useRecentLinks(limit = 5) {
     setError(null);
 
     try {
-      const result = await api.getRecentLinks(limit);
+      const result = await api.getRecentLinks(Math.min(limit, MAX_RECENT_LINKS));
       setData(result || []);
     } catch (err) {
       setError(err);
@@ -129,6 +142,12 @@ export function useDomains() {
   const [error, setError] = useState(null);
 
   const refresh = useCallback(async () => {
+    if (!FEATURES.domains) {
+      setData([]);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 

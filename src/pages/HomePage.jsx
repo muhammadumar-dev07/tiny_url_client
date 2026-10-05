@@ -1,21 +1,26 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
-import { useDomains, useShortenLink } from '../api';
+import { useDeleteLink, useDomains, useRecentLinks, useShortenLink } from '../api';
 import { ArrowRightIcon } from '../components/icons';
 import { marketingVideo } from '../data/content';
 import { actionBanner, cardGrid, faq, plans, platform, videoBanner } from '../data/home';
+import { FEATURES } from '../config/features';
+import { normalizeUrl } from '../utils/url';
 
 function ShortenerHero() {
   const navigate = useNavigate();
   const { data: domains = [], loading: domainsLoading } = useDomains();
   const { data, loading, error, submit } = useShortenLink();
+  const { data: recentLinks = [], refresh: refreshRecentLinks } = useRecentLinks(10);
+  const { remove: removeRecentLink } = useDeleteLink();
   const [values, setValues] = useState({ url: '', alias: '', domain: 'tinyurl.com' });
   const [fieldErrors, setFieldErrors] = useState({});
   const [activeTab, setActiveTab] = useState('shorten');
   const [qrLink, setQrLink] = useState('');
   const [generatedQrLink, setGeneratedQrLink] = useState('');
   const [qrError, setQrError] = useState('');
+  const [copyError, setCopyError] = useState('');
 
   const defaultDomain = useMemo(
     () => domains.find((domain) => domain.isDefault) || domains[0] || { name: 'tinyurl.com' },
@@ -37,13 +42,15 @@ function ShortenerHero() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const nextErrors = {};
-    const urlValue = values.url.trim();
+    let urlValue;
     const aliasValue = values.alias.trim();
 
-    if (!urlValue) {
-      nextErrors.url = 'A URL is required.';
+    try {
+      urlValue = normalizeUrl(values.url);
+    } catch (err) {
+      nextErrors.url = err.message;
     }
-    if (aliasValue && aliasValue.length < 5) {
+    if (FEATURES.alias && aliasValue && aliasValue.length < 5) {
       nextErrors.alias = 'Alias must be at least 5 characters.';
     }
 
@@ -53,11 +60,26 @@ function ShortenerHero() {
     }
 
     try {
-      await submit({ url: urlValue, alias: aliasValue, domain: values.domain || defaultDomain.name });
+      await submit({
+        url: urlValue,
+        ...(FEATURES.alias ? { alias: aliasValue } : {}),
+        ...(FEATURES.domains ? { domain: values.domain || defaultDomain.name } : {}),
+      });
+      await refreshRecentLinks();
       setValues((current) => ({ ...current, url: '', alias: '' }));
       setFieldErrors({});
     } catch (err) {
       setFieldErrors(err?.fields || {});
+    }
+  };
+
+  const handleCopy = async (shortUrl) => {
+    setCopyError('');
+    try {
+      await navigator.clipboard.writeText(shortUrl);
+    } catch (err) {
+      console.error('Unable to copy short link.', err);
+      setCopyError('Unable to copy the short link.');
     }
   };
 
@@ -130,7 +152,9 @@ function ShortenerHero() {
                 {fieldErrors.url && <p className="mt-2 text-sm text-danger">{fieldErrors.url}</p>}
               </div>
 
+              {(FEATURES.domains || FEATURES.alias) && (
               <div className="grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
+                {FEATURES.domains && (
                 <div>
                   <label htmlFor="domain" className="mb-2 block text-sm font-semibold text-slate-700">Domain</label>
                   <select
@@ -149,7 +173,8 @@ function ShortenerHero() {
                     <option value="custom">Add Domain</option>
                   </select>
                 </div>
-
+                )}
+                {FEATURES.alias && (
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-700">Alias</label>
                   <input
@@ -161,10 +186,12 @@ function ShortenerHero() {
                   />
                   {fieldErrors.alias && <p className="mt-2 text-sm text-danger">{fieldErrors.alias}</p>}
                 </div>
+                )}
               </div>
+              )}
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <small className="text-sm text-slate-500">Must be at least 5 characters.</small>
+              <div className={`flex flex-col gap-3 sm:flex-row sm:items-center ${FEATURES.alias ? 'sm:justify-between' : 'sm:justify-end'}`}>
+                {FEATURES.alias && <small className="text-sm text-slate-500">Must be at least 5 characters.</small>}
                 <button
                   type="submit"
                   disabled={loading}
@@ -237,6 +264,38 @@ function ShortenerHero() {
               <a href={data.shortUrl} target="_blank" rel="noreferrer" className="mt-2 block break-all text-lg font-bold underline">
                 {data.shortUrl}
               </a>
+              <button type="button" onClick={() => handleCopy(data.shortUrl)} className="mt-3 rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-dark active:scale-95">
+                Copy
+              </button>
+            </div>
+          )}
+          {copyError && <p className="text-sm font-medium text-danger">{copyError}</p>}
+          {recentLinks.length > 0 && (
+            <div className="rounded-2xl border border-slate-200 bg-white p-4">
+              <h2 className="font-semibold text-slate-800">Recent links</h2>
+              <ul className="mt-3 space-y-3">
+                {recentLinks.map((link) => (
+                  <li key={link.code} className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
+                    <a href={link.shortUrl} target="_blank" rel="noreferrer" className="min-w-0 break-all font-medium text-brand underline">
+                      {link.shortUrl}
+                    </a>
+                    <div className="flex shrink-0 gap-2">
+                      <button type="button" onClick={() => handleCopy(link.shortUrl)} className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-brand hover:bg-slate-50 hover:text-brand active:scale-95">
+                        Copy
+                      </button>
+                      <button
+                        type="button"
+                        title="Remove from history"
+                        aria-label="Remove from history"
+                        onClick={() => removeRecentLink(link.code).then(refreshRecentLinks)}
+                        className="rounded-full border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-brand hover:bg-slate-50 hover:text-brand active:scale-95"
+                      >
+                        Remove from history
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>

@@ -12,9 +12,9 @@ export class ApiError extends Error {
 }
 
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5050',
   timeout: 15000,
-  withCredentials: true,
+  withCredentials: false,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -38,7 +38,7 @@ client.interceptors.response.use(
     throw new ApiError({
       status: error.response.status,
       code: payload.code || 'UNKNOWN_ERROR',
-      message: payload.message || 'Something went wrong.',
+      message: error.response?.data?.message || 'Something went wrong. Please try again.',
       fields,
     });
   },

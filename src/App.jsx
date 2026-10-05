@@ -9,6 +9,7 @@ import BrandedDomainsPage from './pages/BrandedDomainsPage';
 import LinkManagementPage from './pages/LinkManagementPage';
 import AuthPage from './pages/AuthPage';
 import NotFoundPage from './pages/NotFoundPage';
+import { FEATURES } from './config/features';
 
 function Layout() {
   const location = useLocation();
@@ -34,8 +35,8 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/app/branded-domains" element={<BrandedDomainsPage />} />
           <Route path="/app/features/link-management" element={<LinkManagementPage />} />
-          <Route path="/login" element={<AuthPage mode="login" />} />
-          <Route path="/signup" element={<AuthPage mode="signup" />} />
+          <Route path="/login" element={FEATURES.auth ? <AuthPage mode="login" /> : <ComingSoon />} />
+          <Route path="/signup" element={FEATURES.auth ? <AuthPage mode="signup" /> : <ComingSoon />} />
           <Route path="/coming-soon" element={<ComingSoon />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

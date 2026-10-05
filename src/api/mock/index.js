@@ -1,3 +1,4 @@
+// Mock follows the OLD contract and is out of sync with the real backend. Not used when VITE_USE_MOCK=false.
 // DELETE THIS FOLDER when the real backend is ready.
 
 const STORAGE_KEYS = {

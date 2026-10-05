@@ -4,6 +4,7 @@ import { MenuIcon, CloseIcon, ArrowRightIcon } from './icons';
 import { navbarLinks } from '../data/content';
 import { useState } from 'react';
 import logoNavbar from '../assets/images/logo/logo-navbar.svg';
+import { FEATURES } from '../config/features';
 
 const baseLinkClasses = 'text-sm font-semibold text-white transition hover:text-white/75';
 
@@ -50,8 +51,8 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/login" className="text-sm font-semibold text-white hover:text-white/75">Log In</Link>
-              <Link to="/signup" className="inline-flex items-center gap-2 rounded-[5px] bg-white px-5 py-2.5 text-sm font-semibold text-[#212529] shadow-sm transition hover:bg-white/90">
+              <Link to={FEATURES.auth ? '/login' : '/coming-soon'} className="text-sm font-semibold text-white hover:text-white/75">Log In</Link>
+              <Link to={FEATURES.auth ? '/signup' : '/coming-soon'} className="inline-flex items-center gap-2 rounded-[5px] bg-white px-5 py-2.5 text-sm font-semibold text-[#212529] shadow-sm transition hover:bg-white/90">
                 Sign Up
                 <ArrowRightIcon className="h-4 w-4" />
               </Link>
@@ -95,8 +96,8 @@ export default function Navbar() {
               </button>
             ) : (
               <div className="mt-2 flex flex-col gap-2">
-                <Link to="/login" onClick={() => setOpen(false)} className="rounded-full border border-slate-200 px-4 py-2 text-center text-sm font-semibold text-slate-700">Log In</Link>
-                <Link to="/signup" onClick={() => setOpen(false)} className="rounded-full bg-brand px-4 py-2 text-center text-sm font-semibold text-white">Sign Up</Link>
+                <Link to={FEATURES.auth ? '/login' : '/coming-soon'} onClick={() => setOpen(false)} className="rounded-full border border-slate-200 px-4 py-2 text-center text-sm font-semibold text-slate-700">Log In</Link>
+                <Link to={FEATURES.auth ? '/signup' : '/coming-soon'} onClick={() => setOpen(false)} className="rounded-full bg-brand px-4 py-2 text-center text-sm font-semibold text-white">Sign Up</Link>
               </div>
             )}
           </div>
