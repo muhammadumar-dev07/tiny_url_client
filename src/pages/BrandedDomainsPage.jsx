@@ -104,7 +104,7 @@ export default function BrandedDomainsPage() {
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,25,48,0.92)_0%,rgba(0,35,66,0.78)_50%,rgba(0,35,66,0.38)_100%)] max-[767px]:bg-[linear-gradient(0deg,rgba(0,25,48,0.9)_0%,rgba(0,35,66,0.58)_100%)]" />
         <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-cyan-200">Custom domains</p>
+            {/* <p className="text-sm font-bold uppercase tracking-[0.2em] text-cyan-200">Custom domains</p> */}
             <h1 className="mt-4 font-display text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">Turn every short link into a branded experience.</h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/90 sm:text-xl">
               Give your audience a link they recognize. Build trust, improve engagement and keep your marketing consistent across every channel.
