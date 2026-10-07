@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import { AuthProvider } from './api';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -41,7 +41,7 @@ export default function App() {
           <Route path="/app/features/link-management" element={<LinkManagementPage />} />
           <Route path="/login" element={FEATURES.auth ? <AuthPage mode="login" /> : <ComingSoon />} />
           <Route path="/signup" element={FEATURES.auth ? <AuthPage mode="signup" /> : <ComingSoon />} />
-          <Route path="/coming-soon" element={<ComingSoon />} />
+          <Route path="/coming-soon" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

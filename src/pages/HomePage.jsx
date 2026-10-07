@@ -356,8 +356,8 @@ function VideoBanner() {
             <p key={paragraph} className="text-[16px] leading-[25px] font-medium">{paragraph}</p>
           ))}
           <div className="mt-[4px] flex flex-wrap gap-[20px] max-[575px]:flex-col">
-            <Link to="/coming-soon" className={`${buttonClass} bg-white text-[#212529] max-[575px]:w-full`}>{videoBanner.buttons[0]}</Link>
-            <Link to="/coming-soon" className={`${buttonClass} bg-[#002342] text-white max-[575px]:w-full`}>{videoBanner.buttons[1]}</Link>
+            <Link to="/plans" className={`${buttonClass} bg-white text-[#212529] max-[575px]:w-full`}>{videoBanner.buttons[0]}</Link>
+            <Link to="/plans" className={`${buttonClass} bg-[#002342] text-white max-[575px]:w-full`}>{videoBanner.buttons[1]}</Link>
           </div>
         </div>
       </div>
@@ -393,7 +393,7 @@ function CardGrid() {
         </h2>
         <p className="my-[20px] text-center text-[16px] leading-[24px] font-medium">{cardGrid.intro}</p>
         <div className="flex justify-center">
-          <Link to="/coming-soon" className={`${buttonClass} bg-[#0d7693] text-white`}>{cardGrid.button}</Link>
+          <Link to="/plans" className={`${buttonClass} bg-[#0d7693] text-white`}>{cardGrid.button}</Link>
         </div>
       </div>
       <div className="mx-auto max-w-[1400px] px-[100px] pb-[80px] max-[1199px]:px-[40px] max-[576px]:px-[20px] max-[576px]:pb-[40px]">
@@ -538,7 +538,7 @@ function ActionBanner() {
         <h2 className="text-[28px] leading-[33.6px] font-bold max-[575px]:text-[24px] max-[575px]:leading-[30px]">{actionBanner.heading}</h2>
         <p className="my-[20px] text-[16px] leading-[24px] font-medium">{actionBanner.text}</p>
         <div className="flex justify-center gap-[30px] max-[575px]:flex-col">
-          <Link to="/coming-soon" className={`${buttonClass} bg-white text-[#212529] max-[575px]:w-full`}>{actionBanner.buttons[0]}</Link>
+          <Link to="/plans" className={`${buttonClass} bg-white text-[#212529] max-[575px]:w-full`}>{actionBanner.buttons[0]}</Link>
           <Link to="/signup" className={`${buttonClass} bg-[#0d7693] text-white max-[575px]:w-full`}>{actionBanner.buttons[1]}</Link>
         </div>
       </div>

@@ -9,7 +9,7 @@ function destination(label) {
   if (label === 'Branded Links' || label === 'Custom Domains') return '/app/branded-domains';
   if (['Blog', 'Help Center', 'Help Desk'].includes(label)) return '/resources';
   if (label === 'Contact' || label === 'Contact Sales' || label === 'Contact Support') return '/resources#faq';
-  return '/coming-soon';
+  return '/';
 }
 
 function SocialIcon({ name }) {
@@ -53,7 +53,7 @@ export default function Footer() {
         <div className="flex flex-col items-end justify-end max-[991px]:items-start">
           <div className="mb-[40px] flex gap-[20px]">
             {socialLinks.map((name) => (
-              <Link key={name} to="/coming-soon" aria-label={name} className="text-white hover:text-white/75">
+              <Link key={name} to="/" aria-label={name} className="text-white hover:text-white/75">
                 <SocialIcon name={name} />
               </Link>
             ))}
