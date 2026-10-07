@@ -9,6 +9,7 @@ import BrandedDomainsPage from './pages/BrandedDomainsPage';
 import LinkManagementPage from './pages/LinkManagementPage';
 import AuthPage from './pages/AuthPage';
 import NotFoundPage from './pages/NotFoundPage';
+import { FeaturesPage, PlansPage, ResourcesPage } from './pages/ExplorePages';
 import { FEATURES } from './config/features';
 
 function Layout() {
@@ -20,9 +21,9 @@ function Layout() {
 
   return (
     <>
-      <Navbar />
+      {location.pathname === '/login' || location.pathname === '/signup' ? null : <Navbar />}
       <Outlet />
-      <Footer />
+      {location.pathname === '/login' || location.pathname === '/signup' ? null : <Footer />}
     </>
   );
 }
@@ -33,6 +34,9 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/plans" element={<PlansPage />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
           <Route path="/app/branded-domains" element={<BrandedDomainsPage />} />
           <Route path="/app/features/link-management" element={<LinkManagementPage />} />
           <Route path="/login" element={FEATURES.auth ? <AuthPage mode="login" /> : <ComingSoon />} />

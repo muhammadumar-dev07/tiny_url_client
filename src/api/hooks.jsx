@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (payload) => {
     if (!FEATURES.auth) return null;
     const result = await api.login(payload);
-    const nextUser = result?.user || result || null;
+    const nextUser = result?.user || null;
     setUser(nextUser);
     return nextUser;
   }, []);
@@ -59,7 +59,7 @@ export function AuthProvider({ children }) {
   const register = useCallback(async (payload) => {
     if (!FEATURES.auth) return null;
     const result = await api.register(payload);
-    const nextUser = result?.user || result || null;
+    const nextUser = result?.user || null;
     setUser(nextUser);
     return nextUser;
   }, []);

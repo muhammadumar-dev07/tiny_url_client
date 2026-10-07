@@ -22,12 +22,10 @@ import linkFigure3 from '../assets/images/link-management/figure-3.webp';
 import linkVideo from '../assets/images/link-management/link-management-video.webp';
 
 export const navbarLinks = [
-  { label: 'Plans', to: '/coming-soon' },
-  { label: 'Features', to: '/coming-soon' },
+  { label: 'Plans', to: '/plans' },
+  { label: 'Features', to: '/features' },
   { label: 'Domains', to: '/app/branded-domains' },
-  { label: 'Resources', to: '/coming-soon' },
-  { label: 'Link Management', to: '/app/features/link-management' },
-  { label: 'Branded Links', to: '/app/branded-domains' },
+  { label: 'Resources', to: '/resources' },
 ];
 
 export const footerGroups = [

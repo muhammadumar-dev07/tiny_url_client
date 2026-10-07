@@ -3,8 +3,12 @@ import { footerCopyright, footerGroups, socialLinks } from '../data/home';
 import logoFooter from '../assets/images/logo/logo-footer.svg';
 
 function destination(label) {
+  if (label === 'Pricing') return '/plans';
+  if (label === 'Features') return '/features';
   if (label === 'Link Management') return '/app/features/link-management';
-  if (label === 'Branded Links') return '/app/branded-domains';
+  if (label === 'Branded Links' || label === 'Custom Domains') return '/app/branded-domains';
+  if (['Blog', 'Help Center', 'Help Desk'].includes(label)) return '/resources';
+  if (label === 'Contact' || label === 'Contact Sales' || label === 'Contact Support') return '/resources#faq';
   return '/coming-soon';
 }
 

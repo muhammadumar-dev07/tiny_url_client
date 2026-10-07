@@ -99,12 +99,11 @@ export async function deleteLink(code) {
   return { success: true, code };
 }
 
-export async function register({ name, email, password }) {
+export async function register({ email, password }) {
   await sleep(400);
 
-  if (!name || !email || !password) {
+  if (!email || !password) {
     throw createError('VALIDATION_ERROR', 'Please fill in all fields.', {
-      name: !name ? 'Name is required.' : undefined,
       email: !email ? 'Email is required.' : undefined,
       password: !password ? 'Password is required.' : undefined,
     });
@@ -112,12 +111,11 @@ export async function register({ name, email, password }) {
 
   const user = {
     id: `user_${Date.now()}`,
-    name: name.trim(),
     email: email.trim(),
   };
 
   writeLocalStorage(STORAGE_KEYS.auth, user);
-  return { user };
+  return { ok: true, user, token: 'mock-token', tokenType: 'Bearer', expiresIn: '1h' };
 }
 
 export async function login({ email, password }) {
@@ -139,7 +137,7 @@ export async function login({ email, password }) {
   }
 
   writeLocalStorage(STORAGE_KEYS.auth, existing);
-  return { user: existing };
+  return { ok: true, user: existing, token: 'mock-token', tokenType: 'Bearer', expiresIn: '1h' };
 }
 
 export async function logout() {

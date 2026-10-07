@@ -1,1 +1,1 @@
-export const FEATURES = { alias: false, domains: false, auth: false };
+export const FEATURES = { alias: false, domains: false, auth: true };

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getAuthToken } from './token';
 
 export class ApiError extends Error {
   constructor({ status = 0, code = 'UNKNOWN_ERROR', message = 'Something went wrong.', fields = {} }) {
@@ -12,12 +13,20 @@ export class ApiError extends Error {
 }
 
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5050',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
   timeout: 15000,
   withCredentials: false,
   headers: {
     'Content-Type': 'application/json',
   },
+});
+
+client.interceptors.request.use((config) => {
+  const token = getAuthToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 client.interceptors.response.use(
